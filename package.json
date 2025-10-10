@@ -1,0 +1,52 @@
+{
+  "name": "screenshot-to-gpt",
+  "version": "1.0.0",
+  "description": "AI-powered screenshot analysis with global hotkey",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron .",
+    "dev": "npm run build && electron . --dev",
+    "dist": "npm run build && electron-builder",
+    "pack": "npm run build && electron-builder --dir"
+  },
+  "keywords": [
+    "electron",
+    "ai",
+    "screenshot",
+    "openai"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^20.0.0",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "openai": "^4.0.0"
+  },
+  "build": {
+    "appId": "com.yourcompany.screenshottogpt",
+    "productName": "Screenshot To GPT",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

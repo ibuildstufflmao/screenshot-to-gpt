@@ -1,0 +1,124 @@
+
+# 📄 Product Requirements Document (MVP)
+
+## 1. Goal
+Create a **lightweight desktop utility (Windows, Electron)** that:
+- Runs silently in the system tray.
+- Captures a screenshot with a single global hotkey.
+- Sends screenshot + a fixed or user-set prompt to **OpenAI Vision (GPT-4o)**.
+- Displays the model’s text result via a discreet Windows system tray notification.
+- Auto-copies the result to clipboard.
+
+---
+
+## 2. Core Features
+
+### 2.1 System Tray Application
+- App lives in Windows system tray only.
+- Right-click tray menu:
+  - Toggle: *Start with Windows*
+  - Toggle: *Copy results to clipboard (on/off)*
+  - *Show last result*
+  - *Quit*
+
+### 2.2 Global Hotkey
+- Default: **Ctrl + Shift + Space** (configurable in settings file only).
+- On press: triggers screenshot + processing flow.
+- Must work regardless of which app is in focus.
+
+### 2.3 Screenshot Capture
+- v1: **Full screen capture only** (simple, reliable).
+- v1.1 (future): Region snip.
+- Image saved to memory/temp, then discarded after upload.
+
+### 2.4 OpenAI Vision Integration
+- Input: screenshot + prompt (hardcoded default, editable in config).
+- Output: short text string.
+- Errors: fallback toast “⚠️ Couldn’t get result. Try again.”
+
+### 2.5 Output / Notifications
+- Windows notification (system toast):
+  - Title: `AI Result`
+  - Body: 1–2 lines of model response.
+- Result automatically copied to clipboard.
+- Tray menu: “Show last result” option.
+
+---
+
+## 3. Settings
+
+### Storage
+- **File:** `config.json` in `%AppData%/YourAppName/config.json`
+- **Format:** JSON
+- **Lifecycle:** Loaded on startup, updated when toggles change, flushed back to disk.
+
+### Example `config.json`
+```json
+{
+  "apiKey": "sk-xxx",
+  "defaultPrompt": "Summarize this screenshot",
+  "copyToClipboard": true,
+  "startWithWindows": true,
+  "hotkey": "Ctrl+Shift+Space",
+  "lastResult": ""
+}
+````
+
+### In Scope (MVP)
+
+* **API key** — stored in config.json (plain text OK).
+* **Default prompt** — user-editable in config.json.
+* **Copy to clipboard** — tray toggle.
+* **Start with Windows** — tray toggle.
+* **Hotkey** — stored in config.json (not editable in tray).
+* **Last result** — cached for “Show last result.”
+
+### Not in Scope (MVP)
+
+* GUI for editing settings.
+* Multiple hotkeys.
+* Encrypted storage.
+* Profile-based prompts.
+
+---
+
+## 4. Non-Goals
+
+* Cross-platform (macOS/Linux).
+* Region-select screenshot UI.
+* Advanced history/logging.
+* Fancy notification actions.
+
+---
+
+## 5. Technical Implementation (Electron)
+
+* **Main Process**: tray icon, globalShortcut, OpenAI API calls.
+* **Screenshot**: `desktopCapturer` (Electron built-in).
+* **Notification**: Electron `new Notification()`.
+* **Clipboard**: Electron `clipboard.writeText()`.
+* **Config**: JSON file for API key, prompt, options.
+* **Packaging**: `electron-builder` → single installer (Windows EXE).
+
+---
+
+## 6. User Flow
+
+1. User launches app → tray icon appears.
+2. User presses **Ctrl+Shift+Space**.
+3. App captures full screen screenshot.
+4. App sends image + prompt to OpenAI.
+5. App receives response → shows toast.
+6. Result also copied to clipboard.
+7. User can right-click tray icon → *Show last result*.
+
+---
+
+## 7. Success Criteria
+
+* Global hotkey works from any context.
+* Response time under **5 seconds** for average case.
+* Notification + clipboard output are always in sync.
+* Tray app stays idle in background without disruption.
+
+```
