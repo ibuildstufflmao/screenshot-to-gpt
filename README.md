@@ -1,102 +1,114 @@
 # Screenshot To GPT
 
-AI-powered screenshot analysis with global hotkey for Windows.
+AI-powered screenshot analysis with global hotkey for Windows. Analyze any screen content with GPT-4 Vision in seconds.
 
 ## Features
 
-- **System Tray Application**: Lives in Windows system tray only
-- **Global Hotkey**: Default Ctrl+Shift+Space (configurable)
-- **Screenshot Capture**: Full screen capture with AI analysis
-- **OpenAI Vision Integration**: Analyzes screenshots using GPT-4 Vision
-- **Windows Notifications**: Shows results as system toasts
-- **Clipboard Integration**: Automatically copies results to clipboard
-- **Configurable Settings**: JSON-based configuration
+- **System Tray Application**: Runs discreetly in Windows system tray
+- **Visual Status Indicators**: Tray icon changes color based on state (idle, processing, success, error)
+- **Global Hotkeys**: 
+  - `Ctrl+Shift+Space` - Capture and analyze screenshot
+  - `Ctrl+Shift+R` - Show last result
+- **Dual Display Modes**:
+  - **System Notifications**: Traditional Windows toast notifications
+  - **Floating Window**: Stealthy transparent overlay in bottom-right corner
+- **Smart Auto-Hide**: Floating window dismisses after 5 seconds or on any keyboard/mouse input
+- **Theme Support**: Dark and light themes for floating window to blend with any background
+- **OpenAI Vision Integration**: Powered by GPT-4 Vision API
+- **Clipboard Integration**: Automatically copies results to clipboard (optional)
+- **Multiple Prompt Templates**: Pre-configured prompts for different analysis types
+- **Highly Configurable**: Customize via `config.js` and `.env` files
 
 ## Installation
 
-1. Download the latest release from the releases page
-2. Run the installer
-3. The app will appear in your system tray
+Not supported yet :)
 
 ## Configuration
 
-The app uses a flexible configuration system with two main files:
-
-### 1. Environment Variables (.env)
-Create a `.env` file in the project root for sensitive data:
-
-```env
-# OpenAI API Configuration
-OPENAI_API_KEY=sk-your-openai-api-key-here
-
-# Optional: Custom model (default: gpt-4.1)
-# OPENAI_MODEL=gpt-4.1
-```
-
-### 2. Application Settings (config.js)
-The `config.js` file contains all application settings and prompt templates:
-
-```javascript
-module.exports = {
-  // Application Settings
-  app: {
-    name: 'Screenshot To GPT',
-    version: '1.0.0',
-    defaultHotkey: 'Ctrl+Shift+Space',
-    copyToClipboard: true,
-    startWithWindows: true
-  },
-
-  // Prompt Templates
-  prompts: {
-    default: 'Analyze this screenshot and provide a brief summary of what you see.',
-    summarize: 'Summarize the main content and key information visible in this screenshot.',
-    explain: 'Explain what is happening in this screenshot in simple terms.',
-    extractText: 'Extract and list all visible text from this screenshot.',
-    identify: 'Identify the application, website, or interface shown in this screenshot.',
-    debug: 'Help debug any issues visible in this screenshot. What might be wrong?',
-    translate: 'Translate any visible text in this screenshot to English.',
-    custom: (context) => {
-      // Dynamic prompts based on context
-      const hour = new Date().getHours();
-      if (hour < 12) return 'Good morning! Analyze this screenshot...';
-      else if (hour < 18) return 'Good afternoon! What\'s happening...';
-      else return 'Good evening! Please analyze this screenshot...';
-    }
-  }
-};
-```
-
 ### Required Setup
 
-1. **API Key**: Get your OpenAI API key from https://platform.openai.com/api-keys
-2. **Create .env file**: Copy `env.example` to `.env` and add your API key
-3. **Customize prompts**: Edit `config.js` to modify prompts and settings
-4. **Restart the app**: The app will pick up the new configuration
+1. **Get OpenAI API Key**: Sign up at https://platform.openai.com/api-keys
+2. **Create .env file**: Copy `env.example` to `.env` and add your API key:
+   ```env
+   OPENAI_API_KEY=sk-your-openai-api-key-here
+   ```
+3. **Start the app**: Launch and configure via tray menu
+
+### Advanced Configuration (config.js)
+
+The `config.js` file allows you to customize:
+
+- **Application Settings**: Default hotkey, auto-start, clipboard behavior, display mode
+- **OpenAI Settings**: Model selection (default: gpt-5)
+- **Prompt Templates**: Pre-built prompts for different analysis types (summarize, explain, extract text, debug, translate)
+- **Custom Prompts**: Create dynamic prompts based on context
+- **Notification Settings**: Duration, title, message length
+- **Floating Window Settings**: Display duration, font size, width, opacity, theme
+- **Screenshot Settings**: Quality, resolution limits
+
+Edit `config.js` and restart the app to apply changes.
 
 ## Usage
 
-1. **Press the hotkey** (Ctrl+Shift+Space by default) from any application
-2. **Wait for processing** (usually 2-5 seconds)
-3. **View the result** in the Windows notification
-4. **Result is automatically copied** to your clipboard (if enabled)
+### Basic Workflow
 
-## Tray Menu Options
+1. **Capture & Analyze**: Press `Ctrl+Shift+Space` from any application
+2. **Visual Feedback**: Tray icon turns blue (processing) → green (success) or red (error)
+3. **View Results**: 
+   - **Notification Mode**: Windows toast appears with the result
+   - **Floating Window Mode**: Semi-transparent overlay in bottom-right corner
+4. **Auto-Copy**: Result is copied to clipboard automatically (if enabled)
+5. **Recall**: Press `Ctrl+Shift+R` to show the last result again
 
-Right-click the tray icon to access:
+### Display Modes
 
-- **Start with Windows**: Toggle auto-start on Windows boot
-- **Copy results to clipboard**: Toggle automatic clipboard copying
-- **Prompt Type**: Select from different analysis prompts:
-  - **Default**: General screenshot analysis
-  - **Summarize**: Extract key information
-  - **Explain**: Simple explanation of what's happening
-  - **Extract Text**: Get all visible text
-  - **Identify**: Identify applications/interfaces
-  - **Debug**: Help with troubleshooting
-  - **Translate**: Translate visible text to English
-- **Show last result**: Display the most recent analysis
-- **Quit**: Exit the application
+**System Notification** (Default)
+- Traditional Windows notification toast
+- Shows for 5 seconds
+- Good for casual use
+
+**Floating Window** (Stealth Mode)
+- Semi-transparent overlay in bottom-right corner
+- Auto-dismisses after 5 seconds OR on any keyboard/mouse input
+- Dark/Light theme options to blend with background
+- Perfect for exams, presentations, or screen sharing
+
+## Tray Menu
+
+Right-click the tray icon for settings:
+
+```
+├─ Start with Windows            ☐/☑ Auto-start on boot
+├─ Copy results to clipboard     ☐/☑ Auto-copy to clipboard
+├─ Show notifications on completion  ☐/☑ Display results automatically
+├─ ─────────────────────────────
+├─ Display Mode
+│  ├─ ● Notification             System toast notifications
+│  └─ ○ Floating Window          Transparent overlay (stealth)
+├─ Window Theme
+│  ├─ ● Dark                     Black background, white text
+│  └─ ○ Light                    White background, black text
+├─ ─────────────────────────────
+├─ Prompt Type
+│  ├─ ● Default                  General analysis
+│  ├─ ○ Summarize                Extract key information
+│  ├─ ○ Explain                  Simple explanation
+│  ├─ ○ Extract Text             OCR all visible text
+│  ├─ ○ Identify                 Recognize apps/websites
+│  ├─ ○ Debug                    Help troubleshoot issues
+│  └─ ○ Translate                Translate to English
+├─ ─────────────────────────────
+├─ Show last result              Re-display previous result
+├─ ─────────────────────────────
+└─ Quit                          Exit application
+```
+
+### Tray Icon Status Colors
+
+- **Gray** (Default): Idle, ready to capture
+- **Blue**: Processing screenshot with AI
+- **Green**: Analysis successful (briefly, then returns to gray)
+- **Red**: Error occurred (briefly, then returns to gray)
 
 ## Development
 
@@ -138,24 +150,40 @@ npm run dist
 - **Notifications**: Electron's Notification API
 - **Packaging**: electron-builder for Windows EXE
 
+## Tips & Tricks
+
+- **Stealthy Mode**: Use Floating Window + Dark/Light theme to match your background
+- **Silent Mode**: Disable "Show notifications on completion" to work completely silently
+- **Quick Recall**: Press `Ctrl+Shift+R` to re-display the last result
+- **Manual Dismiss**: Press `Escape` to manually close floating window
+- **Custom Prompts**: Edit `config.js` to create specialized analysis prompts
+
 ## Troubleshooting
 
-### "Couldn't get result. Try again."
+### Red tray icon / "Couldn't get result"
 
-- Check your OpenAI API key in config.json
-- Ensure you have sufficient API credits
-- Check your internet connection
+- Verify OpenAI API key in `.env` file
+- Check API credits at https://platform.openai.com/account/usage
+- Ensure internet connection is active
+- Check console logs with `npm run dev`
 
-### Hotkey not working
+### Hotkey not responding
 
-- Make sure no other application is using the same hotkey
-- Try changing the hotkey in config.json
+- Confirm no other app is using `Ctrl+Shift+Space`
+- Try changing hotkey in `config.js`
 - Restart the application
 
-### App not starting with Windows
+### Floating window won't disappear
 
-- Check the "Start with Windows" option in the tray menu
-- Ensure the app is in your startup folder
+- Press `Escape` to manually close
+- Check console logs for errors
+- Window should auto-close after 5 seconds
+
+### App not auto-starting
+
+- Enable "Start with Windows" in tray menu
+- Check Task Manager > Startup tab
+- Verify app is in Windows startup folder
 
 ## License
 
