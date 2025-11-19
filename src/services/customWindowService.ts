@@ -112,9 +112,7 @@ export class CustomWindowService {
     const bgColor = isDark 
       ? `rgba(0, 0, 0, ${settings.opacity})` 
       : `rgba(255, 255, 255, ${settings.opacity})`;
-    const textColor = isDark 
-      ? 'rgba(255, 255, 255, 0.95)' 
-      : 'rgba(0, 0, 0, 0.9)';
+    const textColor = 'rgba(128, 128, 128, 0.9)'; // Grey text
     const borderColor = isDark 
       ? 'rgba(255, 255, 255, 0.1)' 
       : 'rgba(0, 0, 0, 0.15)';
@@ -153,18 +151,13 @@ export class CustomWindowService {
           }
 
           .text-container {
-            background: ${bgColor};
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: transparent;
             color: ${textColor};
             padding: 16px 20px;
-            border-radius: 8px;
             max-width: ${settings.maxWidth - 40}px;
             font-size: ${settings.fontSize}px;
             line-height: 1.6;
             text-align: left;
-            box-shadow: 0 4px 20px ${shadowColor};
-            border: 1px solid ${borderColor};
             word-wrap: break-word;
             animation: slideIn 0.3s ease-out;
           }
@@ -172,11 +165,9 @@ export class CustomWindowService {
           @keyframes slideIn {
             from {
               opacity: 0;
-              transform: translateY(20px);
             }
             to {
               opacity: 1;
-              transform: translateY(0);
             }
           }
 
@@ -187,9 +178,8 @@ export class CustomWindowService {
           }
 
           .text-container code {
-            background: ${codeBgColor};
+            background: transparent;
             padding: 2px 6px;
-            border-radius: 3px;
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: ${settings.fontSize - 1}px;
           }

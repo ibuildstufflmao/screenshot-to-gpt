@@ -122,7 +122,7 @@ OUTPUT:
     displayDuration: 5000, // 5 seconds
     fontSize: 14,
     maxWidth: 400,
-    opacity: 0.5, // 0.0 to 1.0
+    opacity: 0.3, // 0.0 to 1.0
     theme: 'light' // 'dark' or 'light' - toggle with Ctrl+Shift+T
   },
 
